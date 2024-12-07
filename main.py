@@ -31,6 +31,7 @@ def main():
     flat_data = predict.load_binary(flat_nearest_vectors)
     chunk_data = predict.load_binary(chunk_nearest_vectors)
     histogram_data = predict.load_binary(histogram_nearest_vectors)
+    data = [flat_data, chunk_data, histogram_data]
 
     test_range = range(1, 1001)
     predict.graph_accuracy_in_range(combined_test_flat, flat_data, test_range)
@@ -42,6 +43,16 @@ def main():
         2: "HISTOGRAM"
     }
 
+    '''
+    # Print probability percentage of each digit
+    for i in range(0, 3):
+        print("ANS =", y_test[i])
+        accuracies = predict.probability_percentage_of_each_digit(extract_methods, x_test[i], data, i, 1000)
+        for method_name, accuracy in accuracies:
+            print(f"{method_name}'s prediction: ")
+            for i in range(10):
+                print(f"{i}: {round(accuracy[i] * 100, 2)}%")
+    '''
     print("ANS =", y_test[0])
     results = predict.predict_with_methods(x_test[0], K, extract_methods, combined_train_flat, combined_train_chunk, combined_train_histogram)
 

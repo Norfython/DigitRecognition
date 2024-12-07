@@ -87,3 +87,18 @@ def graph_accuracy_in_range(test_features_labels, nearest_neighbors, test_range)
 
     plt.savefig("Accuracy.png")
     plt.show()
+
+
+def probability_percentage_of_each_digit(extract_methods, test_feature_label, nearest_neighbors, index, k):
+    frequents = []
+    for i in range(len(extract_methods)):
+        frequents.append(np.bincount(nearest_neighbors[i][index][:k], minlength=10))
+        
+    result = []
+    for i in range(len(extract_methods)):
+        accuracy = []
+        for x in range(0, 10):
+            accuracy.append(frequents[i][x] / k)
+        result.append([extract_methods[i], accuracy])
+    return result
+    
