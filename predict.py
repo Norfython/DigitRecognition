@@ -53,14 +53,27 @@ def predict_label(vectorized_image, k, comparing_features_labels):
     return predict
 
 def predict_with_methods(image, k, extract_methods, *methods_data):
-    #Return predictions with different extract methods
+    # Return predictions with different extract methods
 
+    # Define k values for specific methods
+    method_k_values = {
+        "FLAT": 3,
+        "CHUNK": 6,
+        "HISTOGRAM": 24
+    }
     results = []
     image = image.reshape((1, 28, 28))
     image_features = process.extract_features(image)
     for i in range(len(extract_methods)):
+        method_name = extract_methods[i]
+        # Use the dynamic k value based on the method
+        if method_name in method_k_values:
+            method_k = method_k_values[method_name]  # Use specific k for method
+        else:
+            method_k = k  # Default to k value passed in the paremeter if method is unavailable
+
         # Append [Method name, predict]
-        results.append([extract_methods[i], predict_label(image_features[i][0], k, methods_data[i])])
+        results.append([method_name, predict_label(image_features[i][0], method_k, methods_data[i])])
 
     return results
 
